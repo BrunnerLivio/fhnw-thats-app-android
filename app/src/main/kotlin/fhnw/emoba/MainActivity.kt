@@ -7,7 +7,7 @@ import fhnw.emoba.thatsapp.ThatsApp
 
 
 class MainActivity : ComponentActivity() {
-    private lateinit var app: EmobaApp  //alle Beispiele implementieren das Interface EmobaApp
+    private lateinit var app: EmobaApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

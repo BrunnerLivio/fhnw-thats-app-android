@@ -2,8 +2,7 @@
 
 === Bearbeitet von
 
-* _Vorname Nachname_
-
+* Livio Brunner
 === Kompatibel mit der App von
 
 * _Vorname Nachname_, _repository-link_
