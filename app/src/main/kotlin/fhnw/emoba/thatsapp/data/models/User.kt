@@ -3,11 +3,20 @@ package fhnw.emoba.thatsapp.data.models
 import fhnw.emoba.thatsapp.data.JSONSerializable
 import org.json.JSONObject
 
-class User(jsonObject: JSONObject) : JSONSerializable {
-    val id = jsonObject.getString("id")
-    val greeting = jsonObject.getString("greeting")
-    val avatar = jsonObject.optString("avatar")
-    val name = jsonObject.optString("name")
+class User(
+    val id: String,
+    val greeting: String,
+    val avatar: String,
+    val name: String
+) : JSONSerializable {
+    constructor(
+        jsonObject: JSONObject
+    ) : this(
+        jsonObject.getString("id"),
+        jsonObject.getString("greeting"),
+        jsonObject.optString("avatar"),
+        jsonObject.optString("name")
+    )
 
 
     override fun asJSONString(): String {

@@ -1,14 +1,31 @@
 package fhnw.emoba.thatsapp.model
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import fhnw.emoba.thatsapp.data.connectors.MqttConnector
+import fhnw.emoba.thatsapp.data.models.User
+import fhnw.emoba.thatsapp.data.services.MessageService
+import fhnw.emoba.thatsapp.data.services.UserService
+import java.util.UUID
+
+val names = listOf(
+    "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi",
+    "Ivan", "Judy", "Mallory", "Oscar", "Peggy", "Romeo", "Sybil", "Trent", "Victor", "Walter"
+)
 
 class ThatsAppModel {
+    private val mqttConnector = MqttConnector()
+    val messageService = MessageService(mqttConnector)
+    val userService = UserService(mqttConnector)
+    var user by mutableStateOf<User?>(null)
+    var users by mutableStateOf(listOf<User>())
+
     var screenState by mutableStateOf(
         ScreenState(
-            Screen.HOME,
-            createScreenModel(Screen.HOME, this)
+            Screen.LOGIN,
+            createScreenModel(Screen.LOGIN, this)
         )
     )
         private set
@@ -24,6 +41,17 @@ class ThatsAppModel {
         screenState.model.init()
     }
 
+    fun login(user: User) {
+        this.user = user
+        userService.connectWithUser(user, {
+            it.onUserAdded { user ->
+                users += user
+            }
+            it.subscribe()
+            Log.d("ThatsAppModel", "init")
+            navigateTo(Screen.HOME)
+        })
+    }
 
     fun init() {
         screenState.model.init()
