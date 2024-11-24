@@ -44,6 +44,9 @@ import fhnw.emoba.thatsapp.ui.components.TopBar
 @Composable
 fun ChatScreen(model: ChatModel) {
     with(model) {
+        if(context.selectedChat == null) {
+            return
+        }
         Column {
             TopBar(model.context, content = {
                 IconButton(onClick = { model.leaveChat() }) {
@@ -53,12 +56,11 @@ fun ChatScreen(model: ChatModel) {
                     )
                 }
 
-                Avatar(selectedUser, height = 32.dp)
+                Avatar(context.selectedChat!!.user, height = 32.dp)
                 Text(
-                    text = selectedUser.name,
+                    text = context.selectedChat!!.user.name,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                    maxLines = 1,
                 )
             })
             ChatBody(model)
@@ -99,7 +101,7 @@ fun MessageComposer(model: ChatModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(8.dp),
 
-            ) {
+                ) {
                 IconButton(onClick = { }) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -156,9 +158,8 @@ fun ChatHistory(model: ChatModel) {
     with(model) {
         LazyColumn(
             modifier = Modifier.fillMaxHeight(),
-            reverseLayout = true
         ) {
-            items(messages) { message ->
+            items(context.selectedChat!!.messages) { message ->
                 ChatMessage(model, message)
             }
         }
@@ -169,7 +170,7 @@ fun ChatHistory(model: ChatModel) {
 fun ChatMessage(model: ChatModel, message: Message) {
     with(message) {
         // Check if the message sender is the current user
-        val isCurrentUser = sender == model.context.user?.id
+        val isCurrentUser = sender == model.context.chatStore.currentUser!!.id
 
         // Adjust alignment and color based on the sender
         val alignment = if (isCurrentUser) Alignment.End else Alignment.Start

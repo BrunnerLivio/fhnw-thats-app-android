@@ -20,9 +20,12 @@ class MessageService(
     fun subscribe(
         userIdForSubscription: UUID,
         onReceiveMessage: (Message) -> Unit,
-        onConnectionFailed: () -> Unit = {}
     ) {
-        mqttConnector.subscribe("$topic/$userIdForSubscription")
+        mqttConnector.subscribe("$topic/$userIdForSubscription",
+            { message ->
+                onReceiveMessage(Message(message))
+            }
+        )
     }
 
     fun publish(

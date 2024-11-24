@@ -7,12 +7,33 @@ import fhnw.emoba.thatsapp.data.map
 import fhnw.emoba.thatsapp.data.models.blocks.ImageBlock
 import fhnw.emoba.thatsapp.data.models.blocks.LocationBlock
 import org.json.JSONObject
+import java.time.LocalDateTime
+import java.util.UUID
 
-class Message(jsonObject: JSONObject) : JSONSerializable {
-    val id = jsonObject.getString("id")
-    val sender = jsonObject.getString("sender")
-    val timestamp = jsonObject.getString("timestamp")
-    val blocks = jsonObject.getJSONArray("blocks").map { createBlock(it) }.filterNotNull()
+class Message(
+    val id: UUID,
+    val sender: UUID,
+    val timestamp: LocalDateTime,
+    val blocks: ArrayList<Block>
+) : JSONSerializable {
+    constructor(
+        jsonObject: JSONObject
+    ) : this(
+        UUID.fromString(jsonObject.getString("id")),
+        UUID.fromString(jsonObject.getString("sender")),
+        LocalDateTime.parse(jsonObject.getString("timestamp")),
+        ArrayList()
+    ) {
+        jsonObject.getJSONArray("blocks").map { createBlock(it) }.filterNotNull()
+            .forEach { blocks.add(it) }
+    }
+
+    constructor(
+        sender: UUID,
+        blocks: ArrayList<Block>
+    ) : this(UUID.randomUUID(), sender, LocalDateTime.now(), blocks) {
+    }
+
 
     private fun createBlock(jsonObject: JSONObject): Block? {
         val type = jsonObject.getString("type")

@@ -4,24 +4,16 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import fhnw.emoba.thatsapp.data.Chat
+import fhnw.emoba.thatsapp.data.ChatStore
 import fhnw.emoba.thatsapp.data.connectors.MqttConnector
 import fhnw.emoba.thatsapp.data.models.User
-import fhnw.emoba.thatsapp.data.services.MessageService
-import fhnw.emoba.thatsapp.data.services.UserService
-import java.util.UUID
-
-val names = listOf(
-    "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi",
-    "Ivan", "Judy", "Mallory", "Oscar", "Peggy", "Romeo", "Sybil", "Trent", "Victor", "Walter"
-)
 
 class ThatsAppModel {
     private val mqttConnector = MqttConnector()
-    val messageService = MessageService(mqttConnector)
-    val userService = UserService(mqttConnector)
-    var user by mutableStateOf<User?>(null)
-    var users by mutableStateOf(listOf<User>())
-    var selectedChat by mutableStateOf<User?>(null)
+    val chatStore = ChatStore(mqttConnector)
+
+    var selectedChat by mutableStateOf<Chat?>(null)
 
     var screenState by mutableStateOf(
         ScreenState(
@@ -42,21 +34,16 @@ class ThatsAppModel {
         screenState.model.init()
     }
 
-    fun openChat(user: User) {
-        selectedChat = user
+    fun openChat(chat: Chat) {
+        selectedChat = chat
+        chat.markAsRead()
         navigateTo(Screen.CHAT)
     }
 
     fun login(user: User) {
-        this.user = user
-        userService.connectWithUser(user, {
-            it.onUserAdded { user ->
-                users += user
-            }
-            it.subscribe()
-            Log.d("ThatsAppModel", "init")
+        chatStore.login(user) {
             navigateTo(Screen.HOME)
-        })
+        }
     }
 
     fun init() {

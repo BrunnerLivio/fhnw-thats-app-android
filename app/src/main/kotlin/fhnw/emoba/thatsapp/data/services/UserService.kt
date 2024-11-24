@@ -6,9 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import fhnw.emoba.thatsapp.data.connectors.MqttConnector
 import fhnw.emoba.thatsapp.data.models.User
+import java.util.UUID
 
 class UserService(
-    val mqttConnector: MqttConnector
+    private val mqttConnector: MqttConnector
 ) {
     fun connectWithUser(
         currentUser: User,
@@ -23,7 +24,7 @@ class UserService(
     }
 }
 
-class UserServiceConnection(val user: User, val mqttConnector: MqttConnector) {
+class UserServiceConnection(val user: User, private val mqttConnector: MqttConnector) {
     private val topic = "users"
     private val userAddedSubscriptions = mutableStateListOf<(User) -> Unit>()
 
@@ -68,7 +69,7 @@ class UserServiceConnection(val user: User, val mqttConnector: MqttConnector) {
     }
 
     private fun greet(
-        targetUserId: String, onPublished: () -> Unit = {}, onError: () -> Unit = {}
+        targetUserId: UUID, onPublished: () -> Unit = {}, onError: () -> Unit = {}
     ) {
         mqttConnector.publish("$topic/${targetUserId}", user, onPublished, onError)
     }

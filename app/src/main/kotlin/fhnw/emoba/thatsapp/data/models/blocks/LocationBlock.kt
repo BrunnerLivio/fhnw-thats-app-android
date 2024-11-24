@@ -1,10 +1,11 @@
 package fhnw.emoba.thatsapp.data.models.blocks
 
 import fhnw.emoba.thatsapp.data.models.GeoPosition
+import fhnw.emoba.thatsapp.data.models.MessageType
 import org.json.JSONObject
 
-class LocationBlock(jsonObject: JSONObject): Block(jsonObject) {
-    val geoPosition = GeoPosition(jsonObject.getJSONObject("geoPosition"))
+class LocationBlock(val geoPosition: GeoPosition) : Block(MessageType.LOCATION) {
+    constructor(jsonObject: JSONObject) : this(GeoPosition(jsonObject.getJSONObject("geoPosition")))
 
     override fun asJSONString(): String {
         return """
