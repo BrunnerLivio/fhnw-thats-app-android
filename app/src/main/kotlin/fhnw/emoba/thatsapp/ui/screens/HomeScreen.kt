@@ -7,21 +7,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fhnw.emoba.thatsapp.data.models.User
 import fhnw.emoba.thatsapp.model.HomeModel
+import fhnw.emoba.thatsapp.ui.components.Avatar
 import fhnw.emoba.thatsapp.ui.components.TopBar
 
 @Composable
@@ -54,32 +58,23 @@ fun UserList(model: HomeModel) {
 @Composable
 fun UserItem(model: HomeModel, user: User) {
     with(user) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Avatar(user)
-            Column(Modifier.fillMaxHeight()) {
-                Text(name)
-                HorizontalDivider()
+        TextButton (onClick = { model.context.openChat(user) }) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Avatar(user, height = 48.dp)
+                Column(Modifier.height(48.dp)) {
+                    Text(
+                        text = name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        modifier = Modifier.height(47.dp)
+                    )
+                    HorizontalDivider()
+                }
             }
         }
-    }
-}
 
-@Composable
-fun Avatar(user: User) {
-    with(user) {
-        // Circle avatar
-        Surface(
-            modifier = Modifier.size(50.dp),
-            shape = RoundedCornerShape(50),
-            color = MaterialTheme.colorScheme.primary
-
-        ) {
-            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Text(name.first().toString())
-            }
-        }
     }
 }

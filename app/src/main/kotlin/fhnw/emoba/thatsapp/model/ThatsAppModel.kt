@@ -21,6 +21,7 @@ class ThatsAppModel {
     val userService = UserService(mqttConnector)
     var user by mutableStateOf<User?>(null)
     var users by mutableStateOf(listOf<User>())
+    var selectedChat by mutableStateOf<User?>(null)
 
     var screenState by mutableStateOf(
         ScreenState(
@@ -39,6 +40,11 @@ class ThatsAppModel {
             }
         screenState = ScreenState(screen, model)
         screenState.model.init()
+    }
+
+    fun openChat(user: User) {
+        selectedChat = user
+        navigateTo(Screen.CHAT)
     }
 
     fun login(user: User) {
