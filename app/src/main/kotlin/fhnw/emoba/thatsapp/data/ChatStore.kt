@@ -12,6 +12,7 @@ import fhnw.emoba.thatsapp.data.connectors.downloadBitmapFromFileIO
 import fhnw.emoba.thatsapp.data.models.Message
 import fhnw.emoba.thatsapp.data.models.MessageType
 import fhnw.emoba.thatsapp.data.models.User
+import fhnw.emoba.thatsapp.data.models.blocks.Block
 import fhnw.emoba.thatsapp.data.models.blocks.TextBlock
 import fhnw.emoba.thatsapp.data.services.MessageService
 import fhnw.emoba.thatsapp.data.services.UserService
@@ -86,8 +87,23 @@ class Chat(val user: User) {
 
     fun addMessage(message: Message) {
         messages.add(message)
-        val textMessage = message.blocks.find { it.type == MessageType.TEXT } as TextBlock
-        mostRecentMessage = textMessage.text
+        // Get last message block
+        val block: Block = message.blocks.lastOrNull() ?: return
+        mostRecentMessage = when (block.type) {
+            MessageType.TEXT -> {
+                (block as TextBlock).text
+            }
+            MessageType.LOCATION -> {
+                "Location sent"
+            }
+            MessageType.IMAGE -> {
+                "Image sent"
+            }
+            else -> {
+                "New message"
+            }
+        }
+
         unreadMessages++
     }
 

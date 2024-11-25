@@ -11,7 +11,7 @@ import fhnw.emoba.thatsapp.data.connectors.CameraAppConnector
 import fhnw.emoba.thatsapp.data.connectors.MqttConnector
 import fhnw.emoba.thatsapp.data.models.User
 
-class ThatsAppModel(activity: ComponentActivity) {
+class ThatsAppModel(private val activity: ComponentActivity) {
     private val mqttConnector = MqttConnector()
     val cameraAppConnector = CameraAppConnector(activity)
     val chatStore = ChatStore(mqttConnector)
@@ -21,7 +21,7 @@ class ThatsAppModel(activity: ComponentActivity) {
     var screenState by mutableStateOf(
         ScreenState(
             Screen.LOGIN,
-            createScreenModel(Screen.LOGIN, this)
+            createScreenModel(Screen.LOGIN, this, activity)
         )
     )
         private set
@@ -30,7 +30,7 @@ class ThatsAppModel(activity: ComponentActivity) {
 
     fun navigateTo(screen: Screen) {
         val model =
-            screenModels[screen] ?: createScreenModel(screen, this).also {
+            screenModels[screen] ?: createScreenModel(screen, this, activity).also {
                 screenModels[screen] = it
             }
         screenState = ScreenState(screen, model)
