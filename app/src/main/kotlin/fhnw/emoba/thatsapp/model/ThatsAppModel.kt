@@ -1,16 +1,19 @@
 package fhnw.emoba.thatsapp.model
 
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import fhnw.emoba.thatsapp.data.Chat
 import fhnw.emoba.thatsapp.data.ChatStore
+import fhnw.emoba.thatsapp.data.connectors.CameraAppConnector
 import fhnw.emoba.thatsapp.data.connectors.MqttConnector
 import fhnw.emoba.thatsapp.data.models.User
 
-class ThatsAppModel {
+class ThatsAppModel(activity: ComponentActivity) {
     private val mqttConnector = MqttConnector()
+    val cameraAppConnector = CameraAppConnector(activity)
     val chatStore = ChatStore(mqttConnector)
 
     var selectedChat by mutableStateOf<Chat?>(null)

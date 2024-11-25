@@ -19,6 +19,8 @@ class User(
         jsonObject.optString("name")
     )
 
+
+
     constructor(
         greeting: String,
         avatar: String,

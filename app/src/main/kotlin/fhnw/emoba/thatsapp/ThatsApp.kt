@@ -11,7 +11,7 @@ object ThatsApp : EmobaApp {
     private lateinit var model: ThatsAppModel
 
     override fun initialize(activity: ComponentActivity) {
-        model = ThatsAppModel()
+        model = ThatsAppModel(activity)
         model.init()
     }
 
