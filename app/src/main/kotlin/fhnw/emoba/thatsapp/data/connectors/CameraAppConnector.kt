@@ -50,7 +50,7 @@ class CameraAppConnector(val activity: ComponentActivity) {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             val providerFile = FileProvider.getUriForFile(
                 activity,
-                "fhnw.emoba.fileprovider",
+                "fhnw.emoba.file-provider",
                 photoFile
             )
             putExtra(MediaStore.EXTRA_OUTPUT, providerFile)

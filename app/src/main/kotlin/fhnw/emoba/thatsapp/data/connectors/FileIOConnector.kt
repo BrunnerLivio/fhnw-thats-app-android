@@ -10,6 +10,10 @@ import java.nio.charset.StandardCharsets
 import javax.net.ssl.HttpsURLConnection
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 fun uploadBitmapToFileIO(bitmap:    Bitmap,
                          onSuccess: (link: String) -> Unit,

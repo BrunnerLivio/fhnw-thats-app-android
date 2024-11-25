@@ -31,7 +31,18 @@ import fhnw.emoba.thatsapp.ui.components.TopBar
 @Composable
 fun HomeScreen(model: HomeModel) {
     Column {
-        TopBar(model.context, content = { Text("AppSearchBar") })
+        TopBar(model.context, content = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth().padding(start=16.dp, end = 16.dp)
+            ) {
+                if (model.context.chatStore.currentUser != null) {
+                    Avatar(model.context.chatStore.currentUser!!, 40.dp)
+                }
+            }
+
+        })
         Body(model)
     }
 }

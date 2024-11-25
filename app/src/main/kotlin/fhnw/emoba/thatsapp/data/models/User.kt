@@ -1,5 +1,11 @@
 package fhnw.emoba.thatsapp.data.models
 
+import android.graphics.Bitmap
+import android.media.Image
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
 import fhnw.emoba.thatsapp.data.JSONSerializable
 import org.json.JSONObject
 import java.util.UUID
@@ -39,4 +45,6 @@ class User(
         """.trimIndent()
     }
 
+
+    var avatarImage by mutableStateOf<ImageBitmap?>(null)
 }

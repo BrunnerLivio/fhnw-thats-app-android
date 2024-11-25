@@ -20,7 +20,7 @@
         android:theme="@style/Theme.ComposeApp">
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="fhnw.emoba.fileprovider"
+            android:authorities="fhnw.emoba.file-provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

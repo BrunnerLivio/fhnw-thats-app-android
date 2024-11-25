@@ -6,14 +6,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.asImageBitmap
 import fhnw.emoba.thatsapp.data.connectors.MqttConnector
+import fhnw.emoba.thatsapp.data.connectors.downloadBitmapFromFileIO
 import fhnw.emoba.thatsapp.data.models.Message
 import fhnw.emoba.thatsapp.data.models.MessageType
 import fhnw.emoba.thatsapp.data.models.User
 import fhnw.emoba.thatsapp.data.models.blocks.TextBlock
 import fhnw.emoba.thatsapp.data.services.MessageService
 import fhnw.emoba.thatsapp.data.services.UserService
-import fhnw.emoba.thatsapp.model.Screen
 import java.util.UUID
 
 class ChatStore(mqttConnector: MqttConnector) {
@@ -29,7 +30,7 @@ class ChatStore(mqttConnector: MqttConnector) {
         userService.connectWithUser(user, {
             it.onUserAdded { user ->
                 Log.d("ThatsAppModel", "User added: ${user.name} - ${user.id}")
-                chats += Chat(user)
+                addUser(user)
             }
             it.subscribe()
             Log.d("ThatsAppModel", "init")
@@ -38,7 +39,21 @@ class ChatStore(mqttConnector: MqttConnector) {
         })
     }
 
-    fun monitorMessages() {
+    private fun addUser(user: User) {
+        chats += Chat(user)
+
+        downloadBitmapFromFileIO(user.avatar, onSuccess = {
+            user.avatarImage = it.asImageBitmap()
+        },
+            onError = {
+                // We just log because we have the avatar as fallback
+                // and showing an error message would be more confusing
+                // than helping
+                Log.d("ChatStore", "Error while downloading avatar")
+            })
+    }
+
+    private fun monitorMessages() {
         messageService.subscribe(
             currentUser!!.id,
             onReceiveMessage = {
@@ -56,7 +71,7 @@ class ChatStore(mqttConnector: MqttConnector) {
         })
     }
 
-    fun getChatByUserId(userId: UUID): Chat? {
+    private fun getChatByUserId(userId: UUID): Chat? {
         return chats.find { it.user.id == userId }
     }
 }
