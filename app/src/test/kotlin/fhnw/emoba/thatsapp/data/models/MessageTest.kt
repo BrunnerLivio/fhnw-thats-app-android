@@ -8,6 +8,8 @@ import org.json.JSONObject
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import java.time.LocalDateTime
+import java.util.UUID
 
 class MessageTest {
     @Test
@@ -16,9 +18,9 @@ class MessageTest {
             JSONObject(
                 """
                 {
-                    "id": "1",
-                    "sender": "1",
-                    "timestamp": "2021-03-01T12:00:00Z",
+                    "id": "8585110c-8a94-4de0-8f86-63bb0302176b",
+                    "sender": "0fdb4622-d394-4c68-8a71-006631352062",
+                    "timestamp": "2024-12-02T12:21:32.980546",
                     "blocks": [
                         {
                             "type": "TEXT",
@@ -31,9 +33,9 @@ class MessageTest {
         )
 
 
-        assertEquals("1", message.id)
-        assertEquals("1", message.sender)
-        assertEquals("2021-03-01T12:00:00Z", message.timestamp)
+        assertEquals(UUID.fromString("8585110c-8a94-4de0-8f86-63bb0302176b"), message.id)
+        assertEquals(UUID.fromString("0fdb4622-d394-4c68-8a71-006631352062"), message.sender)
+        assertEquals(LocalDateTime.parse("2024-12-02T12:21:32.980546"), message.timestamp)
         assertEquals(1, message.blocks.size)
         assertTrue(message.blocks[0] is TextBlock)
         assertEquals("Hello World!", (message.blocks[0] as TextBlock).text)
@@ -45,9 +47,9 @@ class MessageTest {
             JSONObject(
                 """
                 {
-                    "id": "1",
-                    "sender": "1",
-                    "timestamp": "2021-03-01T12:00:00Z",
+                    "id": "8585110c-8a94-4de0-8f86-63bb0302176b",
+                    "sender": "0fdb4622-d394-4c68-8a71-006631352062",
+                    "timestamp": "2024-12-02T12:21:32.980546",
                     "blocks": [
                         {
                             "type": "TEXT",
@@ -71,8 +73,9 @@ class MessageTest {
             )
         )
 
-        assertEquals("1", message.sender)
-        assertEquals("2021-03-01T12:00:00Z", message.timestamp)
+        assertEquals(UUID.fromString("8585110c-8a94-4de0-8f86-63bb0302176b"), message.id)
+        assertEquals(UUID.fromString("0fdb4622-d394-4c68-8a71-006631352062"), message.sender)
+        assertEquals(LocalDateTime.parse("2024-12-02T12:21:32.980546"), message.timestamp)
         assertEquals(3, message.blocks.size)
         assertTrue(message.blocks[0] is TextBlock)
         assertEquals("Hello World!", (message.blocks[0] as TextBlock).text)
@@ -90,9 +93,9 @@ class MessageTest {
     fun testToJSON() {
         val json = """
                 {
-                    "id": "1",
-                    "sender": "1",
-                    "timestamp": "2021-03-01T12:00:00Z",
+                    "id": "8585110c-8a94-4de0-8f86-63bb0302176b",
+                    "sender": "0fdb4622-d394-4c68-8a71-006631352062",
+                    "timestamp": "2024-12-02T12:21:32.980546",
                     "blocks": [
                         {
                             "type": "TEXT",

@@ -3,6 +3,7 @@ package fhnw.emoba.thatsapp.data.models
 import org.json.JSONObject
 import org.junit.Test
 import org.junit.Assert.assertEquals
+import java.util.UUID
 
 class UserTest {
 
@@ -12,7 +13,7 @@ class UserTest {
             JSONObject(
                 """
                     {
-                        "id": "1",
+                        "id": "8585110c-8a94-4de0-8f86-63bb0302176b",
                         "greeting": "Hello",
                         "avatar": "avatar.jpg",
                         "name": "John Doe"
@@ -21,7 +22,7 @@ class UserTest {
             )
         )
 
-        assertEquals("1", user.id)
+        assertEquals(UUID.fromString("8585110c-8a94-4de0-8f86-63bb0302176b"), user.id)
         assertEquals("Hello", user.greeting)
         assertEquals("avatar.jpg", user.avatar)
         assertEquals("John Doe", user.name)
@@ -33,7 +34,7 @@ class UserTest {
             JSONObject(
                 """
                     {
-                        "id": "1",
+                        "id": "8585110c-8a94-4de0-8f86-63bb0302176b",
                         "greeting": "Hello",
                         "avatar": "avatar.jpg",
                         "name": "John Doe"
@@ -45,7 +46,7 @@ class UserTest {
         val jsonString = user.asJSONString()
         val jsonObject = JSONObject(jsonString)
 
-        assertEquals("1", jsonObject.getString("id"))
+        assertEquals(UUID.fromString("8585110c-8a94-4de0-8f86-63bb0302176b"), user.id)
         assertEquals("Hello", jsonObject.getString("greeting"))
         assertEquals("avatar.jpg", jsonObject.getString("avatar"))
         assertEquals("John Doe", jsonObject.getString("name"))

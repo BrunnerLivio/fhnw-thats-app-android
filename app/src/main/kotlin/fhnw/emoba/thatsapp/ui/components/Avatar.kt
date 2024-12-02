@@ -23,9 +23,16 @@ import fhnw.emoba.thatsapp.data.models.User
 @Composable
 fun Avatar(user: User, height: Dp = 48.dp) {
     with(user) {
-        if (avatarImage == null) {
-
-
+        if(avatarImage != null) {
+            Image(
+                bitmap = avatarImage!!,
+                contentDescription = "avatar",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(height)
+                    .clip(CircleShape)
+            )
+        } else if (avatarImage == null) {
             Surface(
                 modifier = Modifier.size(height),
                 shape = RoundedCornerShape(50),
@@ -35,15 +42,6 @@ fun Avatar(user: User, height: Dp = 48.dp) {
                     Text(name.first().toString())
                 }
             }
-        } else {
-            Image(
-                bitmap = avatarImage!!,
-                contentDescription = "avatar",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(height)
-                    .clip(CircleShape)
-            )
         }
 
     }
